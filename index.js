@@ -98,7 +98,25 @@ app.get('/api/usuarios', async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 })
+// PUT - editar componente
+app.put('/api/vault/items/:id', async (req, res) => {
+  try {
+    const item = await VaultItem.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json({ status: 'success', mensaje: 'Componente actualizado', data: item });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
+// DELETE - eliminar componente
+app.delete('/api/vault/items/:id', async (req, res) => {
+  try {
+    await VaultItem.findByIdAndDelete(req.params.id);
+    res.status(200).json({ status: 'success', mensaje: 'Componente eliminado' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 // --- ARRANCAR SERVIDOR ---
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
